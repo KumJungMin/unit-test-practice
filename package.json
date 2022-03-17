@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/KumJungMin/unit-test-practice#readme",
   "devDependencies": {
+    "@faker-js/faker": "^6.0.0",
     "jest": "^27.5.1"
   }
 }
