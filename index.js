@@ -1,21 +1,28 @@
-// 테스트가 통과되도록 운영코드를 고쳐보자!
-// 함수 refinetText 목적
-// - 모든 띄어쓰기(space, tab)를 하나의 공백으로 변경하는 것
-// - 인자로 넘어온 특정 문자를 마스킹하는 것
-function refinetText(s, options) {
-  s = s
-    .replace("     ", " ")
-    .replace("\t", "")
-    .replace("  ", " ")
-    .replace("  ", " ")
-    .replace("  ", " ")
-    .replace("mockist", "*******")
-    .replace("purist", "******");
-  if (options) {
-    for (const bannedWord of options.bannedWords) {
-      s = s.replace(bannedWord, "*".repeat(bannedWord.length));
-    }
-  }
-  return s;
+// 코드를 정리(리팩토링)해보자!
+// 테스트가 있기 때문에 리팩토링에 있어 기능 유지를 보장할 수 있음
+function refineText(source, options) {
+  return [normalizeWhitespaces, compactWhitespaces, maskBannedWords].reduce(
+    (value, filter) => filter(value, options),
+    source
+  );
 }
-module.exports = refinetText;
+
+function normalizeWhitespaces(value) {
+  return value.replace("\t", " ");
+}
+
+function compactWhitespaces(value) {
+  return value.indexOf("  ") < 0
+    ? value
+    : compactWhitespaces(value.replace("  ", " "));
+}
+
+function maskBannedWords(value, options) {
+  return options ? options.bannedWords.reduce(maskBannedWord, value) : value;
+}
+
+function maskBannedWord(value, bannedWord) {
+  return value.replace(bannedWord, "*".repeat(bannedWord.length));
+}
+
+module.exports = refineText;
