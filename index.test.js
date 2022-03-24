@@ -59,3 +59,17 @@ describe("given banned word", () => {
     expect(result).toBe(expected);
   });
 });
+
+// ---------------------------------------------------------------
+// 테스트 주도 개발을 해보자
+// 1. 테스트 코드 작성
+// - 맨 앞 공백을 제거하는 기능을 추가해보자
+// - 우선 테스트를 먼저 작성한다(운영 코드에 기능을 추가하지 않았으나, 처음에는 실패하는 게 당연)
+// - 실패한 테스트를 통과시키기 위한 최소한의 수정으로 운영코드를 고친다. -> index.js
+test.each`
+  source            | expected
+  ${" hello world"} | ${"hello world"}
+`(`sut correctly trims whitespaces`, ({ source, expected }) => {
+  const result = sut(source);
+  expect(result).toBe(expected);
+});
